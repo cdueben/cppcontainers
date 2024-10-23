@@ -1,0 +1,39 @@
+Package: cppcontainers
+Type: Package
+Title: C++ Standard Template Library containers in R
+Version: 0.0.1
+Date: 2024-07-25
+Authors@R: person("Christian", "Düben", email = "cdueben.ml+cran@proton.me", role = c("aut", "cre"))
+Description: Use the C++ Standard Template Library containers directly in R. Includes sets, unordered sets, maps, unordered maps, vectors, queues, and 
+  lists.
+Encoding: UTF-8
+License: GPL (>= 2)
+Imports: base (>= 4.0.0), Rcpp
+LinkingTo: Rcpp
+RoxygenNote: 7.3.2
+Collate: 
+    'RcppExports.R'
+    'utils.R'
+    'classes.R'
+    'bucket_count.R'
+    'clear.R'
+    'contains.R'
+    'count.R'
+    'emplace.R'
+    'empty.R'
+    'erase.R'
+    'insert.R'
+    'max_bucket_count.R'
+    'max_load_factor.R'
+    'max_size.R'
+    'merge.R'
+    'operators.R'
+    'print.R'
+    'rehash.R'
+    'reserve.R'
+    'set.R'
+    'show.R'
+    'size.R'
+    'to_r.R'
+    'type.R'
+    'unordered_set.R'
