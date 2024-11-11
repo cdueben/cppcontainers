@@ -2,12 +2,17 @@
 % Please edit documentation in R/reserve.R
 \name{reserve}
 \alias{reserve}
-\title{Reserve bucket space and rehash}
+\alias{reserve,CppUnorderedSet-method}
+\alias{reserve,CppUnorderedMultiset-method}
+\alias{reserve,CppUnorderedMap-method}
+\alias{reserve,CppUnorderedMultimap-method}
+\alias{reserve,CppVector-method}
+\title{Reserve space}
 \usage{
 reserve(x, n)
 }
 \arguments{
-\item{x}{A \code{cppcontainers} object}
+\item{x}{A CppUnorderedSet, CppUnorderedMultiset, CppUnorderedMap, CppUnorderedMultimap, or CppVector object.}
 
 \item{n}{The minimum number of elements per bucket.}
 }
@@ -15,10 +20,28 @@ reserve(x, n)
 Invisibly returns \code{NULL}.
 }
 \description{
-Set the number of buckets to be able to hold at least \code{n} elements and rehash.
+Reserve space for the container by reference.
+}
+\details{
+In case of a CppUnorderedSet, CppUnorderedMultiset, CppUnorderedMap, CppUnorderedMultimap, the method sets the number of buckets to be able to 
+hold at least \code{n} elements and rehashes. In case of a CppVector, the method sets the capacity to \code{n}.
 }
 \examples{
-s <- unordered_set(1:10)
+s <- cpp_unordered_set(4:6)
+bucket_count(s)
+# [1] 13
 reserve(s, 3)
+bucket_count(s)
+# [1] 5
 
+v <- cpp_vector(4:6)
+capacity(v)
+# [1] 3
+reserve(v, 10)
+capacity(v)
+# [1] 10
+
+}
+\seealso{
+\link{bucket_count}, \link{capacity}, \link{load_factor}, \link{max_bucket_count}, \link{max_load_factor}.
 }

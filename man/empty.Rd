@@ -2,6 +2,21 @@
 % Please edit documentation in R/empty.R
 \name{empty}
 \alias{empty}
+\alias{empty,CppSet-method}
+\alias{empty,CppUnorderedSet-method}
+\alias{empty,CppMultiset-method}
+\alias{empty,CppUnorderedMultiset-method}
+\alias{empty,CppMap-method}
+\alias{empty,CppUnorderedMap-method}
+\alias{empty,CppMultimap-method}
+\alias{empty,CppUnorderedMultimap-method}
+\alias{empty,CppStack-method}
+\alias{empty,CppQueue-method}
+\alias{empty,CppPriorityQueue-method}
+\alias{empty,CppVector-method}
+\alias{empty,CppDeque-method}
+\alias{empty,CppForwardList-method}
+\alias{empty,CppList-method}
 \title{Check emptiness}
 \usage{
 empty(x)
@@ -16,12 +31,12 @@ Returns \code{TRUE}, if the container is empty, and \code{FALSE} otherwise.
 Check, if a container is empty, i.e. does not contain elements.
 }
 \examples{
-s <- set(1:10)
-s
-1 2 3 4 5 6 7 8 9 10
+v <- cpp_vector(4:6)
+v
+# 4 5 6
 
-clear(s)
-empty(s)
-[1] TRUE
+clear(v)
+empty(v)
+# [1] TRUE
 
 }

@@ -37,4 +37,3 @@ Rcpp::XPtr<std::set<bool> > set_b(Rcpp::LogicalVector& v) {
   Rcpp::XPtr<std::set<bool> > p(s);
   return p;
 }
-

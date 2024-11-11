@@ -4,13 +4,6 @@
 #include <string>
 #include <vector>
 
-// template <typename T>
-// Rcpp::XPtr<std::unordered_set<T> > unordered_set_i(Rcpp::IntegerVector& v) {
-//   std::unordered_set<T>* s = new std::unordered_set<T>(v.begin(), v.end());
-//   Rcpp::XPtr<std::unordered_set<T> > p(s);
-//   return p;
-// }
-
 // [[Rcpp::export]]
 Rcpp::XPtr<std::unordered_set<int> > unordered_set_i(Rcpp::IntegerVector& v) {
   std::unordered_set<int>* s = new std::unordered_set<int>(v.begin(), v.end());
@@ -27,7 +20,7 @@ Rcpp::XPtr<std::unordered_set<double> > unordered_set_d(Rcpp::NumericVector& v) 
 
 // [[Rcpp::export]]
 Rcpp::XPtr<std::unordered_set<std::string> > unordered_set_s(Rcpp::CharacterVector& v) {
-  const std::vector<std::string> c (v.begin(), v.end());
+  const std::vector<std::string> c = Rcpp::as<std::vector<std::string> >(v);
   std::unordered_set<std::string>* s = new std::unordered_set<std::string>(c.begin(), c.end());
   Rcpp::XPtr<std::unordered_set<std::string> > p(s);
   return p;

@@ -2,19 +2,49 @@
 % Please edit documentation in R/type.R
 \name{type}
 \alias{type}
-\title{Print data type}
+\alias{type,CppSet-method}
+\alias{type,CppUnorderedSet-method}
+\alias{type,CppMultiset-method}
+\alias{type,CppUnorderedMultiset-method}
+\alias{type,CppMap-method}
+\alias{type,CppUnorderedMap-method}
+\alias{type,CppMultimap-method}
+\alias{type,CppUnorderedMultimap-method}
+\alias{type,CppStack-method}
+\alias{type,CppQueue-method}
+\alias{type,CppPriorityQueue-method}
+\alias{type,CppVector-method}
+\alias{type,CppDeque-method}
+\alias{type,CppForwardList-method}
+\alias{type,CppList-method}
+\title{Get data type}
 \usage{
 type(x)
 }
 \arguments{
-\item{x}{An object of any class defined by this package.}
+\item{x}{A \code{cppcontainers} object.}
 }
 \value{
-A character value.
+A named character vector for CppMap, CppUnorderedMap, CppMultimap, and CppUnorderedMultimap objects. A character otherwise.
 }
 \description{
-Print the data type of a container.
+Obtain the data type of a container.
 }
 \details{
-The available types are integer, double, string, and boolean.
+The available types are integer, double, string, and boolean. They correspond to the integer, numeric/ double, character, and logical types in 
+R.
+}
+\examples{
+s <- cpp_set(4:6)
+type(s)
+# [1] "integer"
+
+m <- cpp_unordered_map(c("hello", "world"), c(0.5, 1.5))
+type(m)
+#      key    value 
+# "string" "double" 
+
+}
+\seealso{
+\link{print}, \link{sorting}, \link{to_r}.
 }

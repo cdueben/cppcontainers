@@ -2,12 +2,16 @@
 % Please edit documentation in R/rehash.R
 \name{rehash}
 \alias{rehash}
+\alias{rehash,CppUnorderedSet-method}
+\alias{rehash,CppUnorderedMultiset-method}
+\alias{rehash,CppUnorderedMap-method}
+\alias{rehash,CppUnorderedMultimap-method}
 \title{Set minimum bucket count and rehash}
 \usage{
 rehash(x, n = 0)
 }
 \arguments{
-\item{x}{A \code{cppcontainers} object}
+\item{x}{A CppUnorderedSet, CppUnorderedMultiset, CppUnorderedMap, or CppUnorderedMultimap object.}
 
 \item{n}{The minimum number of buckets. A value of \code{0} forces an unconditional rehash.}
 }
@@ -15,11 +19,14 @@ rehash(x, n = 0)
 Invisibly returns \code{NULL}.
 }
 \description{
-Set a container's minimum bucket count and rehash.
+Set a container's minimum bucket count and rehash by reference.
 }
 \examples{
-s <- unordered_set(1:10)
+s <- cpp_unordered_set(4:6)
 rehash(s)
 rehash(s, 3)
 
+}
+\seealso{
+\link{bucket_count}, \link{load_factor}, \link{max_bucket_count}, \link{max_load_factor}, \link{reserve}.
 }

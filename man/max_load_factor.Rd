@@ -2,30 +2,36 @@
 % Please edit documentation in R/max_load_factor.R
 \name{max_load_factor}
 \alias{max_load_factor}
+\alias{max_load_factor,CppUnorderedSet-method}
+\alias{max_load_factor,CppUnorderedMultiset-method}
+\alias{max_load_factor,CppUnorderedMap-method}
+\alias{max_load_factor,CppUnorderedMultimap-method}
 \title{Get or set the maximum load factor}
 \usage{
 max_load_factor(x, max_load = NULL)
 }
 \arguments{
-\item{x}{A \code{cppcontainers} object}
+\item{x}{A CppUnorderedSet, CppUnorderedMultiset, CppUnorderedMap, or CppUnorderedMultimap object.}
 
-\item{max_load}{The containers maximum load factor, i.e. number of elements per bucket. The default \code{NULL} argument retrieves the container's 
-current maximum load factor. A numeric argument sets it to the specified value.}
+\item{max_load}{The containers maximum load factor. If \code{NULL}, the function returns the container's current maximum load factor. Passing a number 
+sets the maximum load factor to that value.}
 }
 \value{
-Returns the numeric current maximum load factor, if \code{max_load} is \code{NULL}. Invisibly returns \code{NULL}, if \code{max_load} is 
-numeric.
+Returns a numeric, if \code{max_load} is \code{NULL}. Invisibly returns \code{NULL}, if \code{max_load} is numeric.
 }
 \description{
-#' Get or set the maximum load factor.
+Get or set the maximum load factor by reference, i.e. the number of elements per bucket.
 }
 \examples{
-s <- unordered_set(1:10)
+s <- cpp_unordered_set(4:6)
 max_load_factor(s)
-[1] 1
+# [1] 1
 
 max_load_factor(s, 3)
 max_load_factor(s)
-[1] 3
+# [1] 3
 
+}
+\seealso{
+\link{bucket_count}, \link{load_factor}, \link{max_bucket_count}.
 }

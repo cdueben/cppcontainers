@@ -2,25 +2,41 @@
 % Please edit documentation in R/max_size.R
 \name{max_size}
 \alias{max_size}
+\alias{max_size,CppSet-method}
+\alias{max_size,CppUnorderedSet-method}
+\alias{max_size,CppMultiset-method}
+\alias{max_size,CppUnorderedMultiset-method}
+\alias{max_size,CppMap-method}
+\alias{max_size,CppUnorderedMap-method}
+\alias{max_size,CppMultimap-method}
+\alias{max_size,CppUnorderedMultimap-method}
+\alias{max_size,CppVector-method}
+\alias{max_size,CppDeque-method}
+\alias{max_size,CppForwardList-method}
+\alias{max_size,CppList-method}
 \title{Get maximum container size}
 \usage{
 max_size(x)
 }
 \arguments{
-\item{x}{A \code{cppcontainers} object.}
+\item{x}{A CppSet, CppUnorderedSet, CppMultiset, CppUnorderedMultiset, CppMap, CppUnorderedMap, CppMultimap, CppUnorderedMultimap, CppVector, CppDeque, 
+CppForwardList, or CppList object.}
 }
 \value{
 Returns a numeric.
 }
 \description{
-Get the maximum number of elements the container can hold.
+Obtain the maximum number of elements the container can hold.
 }
 \examples{
-s <- set(1:10)
+s <- cpp_deque(4:6)
 s
-1 2 3 4 5 6 7 8 9 10
+# 4 5 6
 
 max_size(s)
-[1] 4.611686e+17
+# [1] 4.611686e+18
 
+}
+\seealso{
+\link{capacity}, \link{max_bucket_count}, \link{max_load_factor}, \link{size}.
 }
