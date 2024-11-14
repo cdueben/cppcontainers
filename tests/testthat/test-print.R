@@ -1,3 +1,5 @@
+# which order some of the unordered containers store elements in differs between gcc and clang
+
 # set
 testthat::test_that("set print integer", {
   v <- cpp_set(4:6)
@@ -43,9 +45,9 @@ testthat::test_that("unordered_set print integer", {
   testthat::expect_output(print(v, n = 2), ".{3}")
 })
 testthat::test_that("unordered_set print double", {
-  v <- cpp_unordered_set(seq.int(1, 2, 0.5))
-  testthat::expect_output(print(v), ".{7}")
-  testthat::expect_output(print(v, n = 2), ".{5}")
+  v <- cpp_unordered_set(seq.int(1, 3, 1))
+  testthat::expect_output(print(v), ".{6}")
+  testthat::expect_output(print(v, n = 2), ".{4}")
 })
 testthat::test_that("unordered_set print string", {
   v <- cpp_unordered_set(c("hello", "there", "world"))
@@ -55,7 +57,7 @@ testthat::test_that("unordered_set print string", {
 testthat::test_that("unordered_set print boolean", {
   v <- cpp_unordered_set(c(TRUE, FALSE))
   testthat::expect_output(print(v), ".{11}")
-  testthat::expect_output(print(v, n = 1), ".{6}")
+  testthat::expect_output(print(v, n = 1))
 })
 
 # multiset
@@ -103,9 +105,9 @@ testthat::test_that("unordered_multiset print integer", {
   testthat::expect_output(print(v, n = 2), ".{3}")
 })
 testthat::test_that("unordered_multiset print double", {
-  v <- cpp_unordered_multiset(seq.int(1, 2, 0.5))
-  testthat::expect_output(print(v), ".{7}")
-  testthat::expect_output(print(v, n = 2), ".{5}")
+  v <- cpp_unordered_multiset(seq.int(1, 3, 1))
+  testthat::expect_output(print(v), ".{6}")
+  testthat::expect_output(print(v, n = 2), ".{4}")
 })
 testthat::test_that("unordered_multiset print string", {
   v <- cpp_unordered_multiset(c("hello", "there", "world"))
@@ -115,7 +117,7 @@ testthat::test_that("unordered_multiset print string", {
 testthat::test_that("unordered_multiset print boolean", {
   v <- cpp_unordered_multiset(c(TRUE, FALSE))
   testthat::expect_output(print(v), ".{11}")
-  testthat::expect_output(print(v, n = 1), ".{6}")
+  testthat::expect_output(print(v, n = 1))
 })
 
 # map
@@ -266,14 +268,14 @@ testthat::test_that("map print boolean boolean", {
 
 # unordered_map
 testthat::test_that("unordered_map print integer integer", {
-  v <- cpp_unordered_map(4:6, 8:10)
+  v <- cpp_unordered_map(4:6, 7:9)
   testthat::expect_output(print(v), ".{18}")
-  testthat::expect_output(print(v, n = 2), ".{13}")
+  testthat::expect_output(print(v, n = 2), ".{12}")
 })
 testthat::test_that("unordered_map print integer double", {
-  v <- cpp_unordered_map(4:6, seq.int(1, 2, 0.5))
-  testthat::expect_output(print(v), ".{20}")
-  testthat::expect_output(print(v, n = 2), ".{14}")
+  v <- cpp_unordered_map(4:6, seq.int(1, 3, 1))
+  testthat::expect_output(print(v), ".{18}")
+  testthat::expect_output(print(v, n = 2), ".{12}")
 })
 testthat::test_that("unordered_map print integer string", {
   v <- cpp_unordered_map(4:6, c("hello", "there", "world"))
@@ -283,67 +285,67 @@ testthat::test_that("unordered_map print integer string", {
 testthat::test_that("unordered_map print integer boolean", {
   v <- cpp_unordered_map(4:6, c(TRUE, FALSE, FALSE))
   testthat::expect_output(print(v), ".{29}")
-  testthat::expect_output(print(v, n = 2), ".{20}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_map print double integer", {
-  v <- cpp_unordered_map(seq.int(4, 4.2, 0.1), 8:10)
-  testthat::expect_output(print(v), ".{23}")
-  testthat::expect_output(print(v, n = 2), ".{17}")
+  v <- cpp_unordered_map(seq.int(4, 6, 1), 7:9)
+  testthat::expect_output(print(v), ".{18}")
+  testthat::expect_output(print(v, n = 2), ".{12}")
 })
 testthat::test_that("unordered_map print double double", {
-  v <- cpp_unordered_map(seq.int(4, 4.2, 0.1), seq.int(1, 2, 0.5))
-  testthat::expect_output(print(v), ".{24}")
-  testthat::expect_output(print(v, n = 2), ".{18}")
+  v <- cpp_unordered_map(seq.int(4, 6, 1), seq.int(1, 3, 1))
+  testthat::expect_output(print(v), ".{18}")
+  testthat::expect_output(print(v, n = 2), ".{12}")
 })
 testthat::test_that("unordered_map print double string", {
-  v <- cpp_unordered_map(seq.int(4, 4.2, 0.1), c("hello", "there", "world"))
-  testthat::expect_output(print(v), ".{40}")
-  testthat::expect_output(print(v, n = 2), ".{28}")
+  v <- cpp_unordered_map(seq.int(4, 6, 1), c("hello", "there", "world"))
+  testthat::expect_output(print(v), ".{36}")
+  testthat::expect_output(print(v, n = 2), ".{24}")
 })
 testthat::test_that("unordered_map print double boolean", {
-  v <- cpp_unordered_map(seq.int(4, 4.2, 0.1), c(TRUE, FALSE, FALSE))
-  testthat::expect_output(print(v), ".{33}")
-  testthat::expect_output(print(v, n = 2), ".{24}")
+  v <- cpp_unordered_map(seq.int(4, 6, 1), c(TRUE, FALSE, FALSE))
+  testthat::expect_output(print(v), ".{29}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_map print string integer", {
   v <- cpp_unordered_map(c("a", "quick", "test"), 8:10)
   testthat::expect_output(print(v), ".{32}")
-  testthat::expect_output(print(v, n = 2), ".{24}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_map print string double", {
   v <- cpp_unordered_map(c("a", "quick", "test"), seq.int(1, 2, 0.5))
   testthat::expect_output(print(v), ".{33}")
-  testthat::expect_output(print(v, n = 2), ".{25}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_map print string string", {
   v <- cpp_unordered_map(c("a", "quick", "test"), c("hello", "there", "world"))
   testthat::expect_output(print(v), ".{49}")
-  testthat::expect_output(print(v, n = 2), ".{35}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_map print string boolean", {
   v <- cpp_unordered_map(c("a", "quick", "test"), c(TRUE, FALSE, FALSE))
   testthat::expect_output(print(v), ".{42}")
-  testthat::expect_output(print(v, n = 2), ".{31}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_map print boolean integer", {
   v <- cpp_unordered_map(c(TRUE, FALSE), 8:9)
   testthat::expect_output(print(v), ".{19}")
-  testthat::expect_output(print(v, n = 1), ".{10}")
+  testthat::expect_output(print(v, n = 1))
 })
 testthat::test_that("unordered_map print boolean double", {
   v <- cpp_unordered_map(c(TRUE, FALSE), seq.int(1, 1.5, 0.5))
   testthat::expect_output(print(v), ".{21}")
-  testthat::expect_output(print(v, n = 1), ".{12}")
+  testthat::expect_output(print(v, n = 1))
 })
 testthat::test_that("unordered_map print boolean string", {
   v <- cpp_unordered_map(c(TRUE, FALSE), c("hello", "there"))
   testthat::expect_output(print(v), ".{31}")
-  testthat::expect_output(print(v, n = 1), ".{16}")
+  testthat::expect_output(print(v, n = 1))
 })
 testthat::test_that("unordered_map print boolean boolean", {
   v <- cpp_unordered_map(c(TRUE, FALSE), c(TRUE, FALSE))
   testthat::expect_output(print(v), ".{26}")
-  testthat::expect_output(print(v, n = 1), ".{14}")
+  testthat::expect_output(print(v, n = 1))
 })
 
 # multimap
@@ -494,14 +496,14 @@ testthat::test_that("multimap print boolean boolean", {
 
 # unordered_multimap
 testthat::test_that("unordered_multimap print integer integer", {
-  v <- cpp_unordered_multimap(4:6, 8:10)
+  v <- cpp_unordered_multimap(4:6, 7:9)
   testthat::expect_output(print(v), ".{18}")
-  testthat::expect_output(print(v, n = 2), ".{13}")
+  testthat::expect_output(print(v, n = 2), ".{12}")
 })
 testthat::test_that("unordered_multimap print integer double", {
-  v <- cpp_unordered_multimap(4:6, seq.int(1, 2, 0.5))
-  testthat::expect_output(print(v), ".{20}")
-  testthat::expect_output(print(v, n = 2), ".{14}")
+  v <- cpp_unordered_multimap(4:6, seq.int(1, 3, 1))
+  testthat::expect_output(print(v), ".{18}")
+  testthat::expect_output(print(v, n = 2), ".{12}")
 })
 testthat::test_that("unordered_multimap print integer string", {
   v <- cpp_unordered_multimap(4:6, c("hello", "there", "world"))
@@ -511,67 +513,67 @@ testthat::test_that("unordered_multimap print integer string", {
 testthat::test_that("unordered_multimap print integer boolean", {
   v <- cpp_unordered_multimap(4:6, c(TRUE, FALSE, FALSE))
   testthat::expect_output(print(v), ".{29}")
-  testthat::expect_output(print(v, n = 2), ".{20}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_multimap print double integer", {
-  v <- cpp_unordered_multimap(seq.int(4, 4.2, 0.1), 8:10)
-  testthat::expect_output(print(v), ".{23}")
-  testthat::expect_output(print(v, n = 2), ".{17}")
+  v <- cpp_unordered_multimap(seq.int(4, 6, 1), 7:9)
+  testthat::expect_output(print(v), ".{18}")
+  testthat::expect_output(print(v, n = 2), ".{12}")
 })
 testthat::test_that("unordered_multimap print double double", {
-  v <- cpp_unordered_multimap(seq.int(4, 4.2, 0.1), seq.int(1, 2, 0.5))
-  testthat::expect_output(print(v), ".{24}")
-  testthat::expect_output(print(v, n = 2), ".{18}")
+  v <- cpp_unordered_multimap(seq.int(4, 6, 1), seq.int(1, 3, 1))
+  testthat::expect_output(print(v), ".{18}")
+  testthat::expect_output(print(v, n = 2), ".{12}")
 })
 testthat::test_that("unordered_multimap print double string", {
-  v <- cpp_unordered_multimap(seq.int(4, 4.2, 0.1), c("hello", "there", "world"))
-  testthat::expect_output(print(v), ".{40}")
-  testthat::expect_output(print(v, n = 2), ".{28}")
+  v <- cpp_unordered_multimap(seq.int(4, 6, 1), c("hello", "there", "world"))
+  testthat::expect_output(print(v), ".{36}")
+  testthat::expect_output(print(v, n = 2), ".{24}")
 })
 testthat::test_that("unordered_multimap print double boolean", {
-  v <- cpp_unordered_multimap(seq.int(4, 4.2, 0.1), c(TRUE, FALSE, FALSE))
-  testthat::expect_output(print(v), ".{33}")
-  testthat::expect_output(print(v, n = 2), ".{24}")
+  v <- cpp_unordered_multimap(seq.int(4, 6, 1), c(TRUE, FALSE, FALSE))
+  testthat::expect_output(print(v), ".{29}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_multimap print string integer", {
   v <- cpp_unordered_multimap(c("a", "quick", "test"), 8:10)
   testthat::expect_output(print(v), ".{32}")
-  testthat::expect_output(print(v, n = 2), ".{24}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_multimap print string double", {
   v <- cpp_unordered_multimap(c("a", "quick", "test"), seq.int(1, 2, 0.5))
   testthat::expect_output(print(v), ".{33}")
-  testthat::expect_output(print(v, n = 2), ".{25}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_multimap print string string", {
   v <- cpp_unordered_multimap(c("a", "quick", "test"), c("hello", "there", "world"))
   testthat::expect_output(print(v), ".{49}")
-  testthat::expect_output(print(v, n = 2), ".{35}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_multimap print string boolean", {
   v <- cpp_unordered_multimap(c("a", "quick", "test"), c(TRUE, FALSE, FALSE))
   testthat::expect_output(print(v), ".{42}")
-  testthat::expect_output(print(v, n = 2), ".{31}")
+  testthat::expect_output(print(v, n = 2))
 })
 testthat::test_that("unordered_multimap print boolean integer", {
   v <- cpp_unordered_multimap(c(TRUE, FALSE), 8:9)
   testthat::expect_output(print(v), ".{19}")
-  testthat::expect_output(print(v, n = 1), ".{10}")
+  testthat::expect_output(print(v, n = 1))
 })
 testthat::test_that("unordered_multimap print boolean double", {
   v <- cpp_unordered_multimap(c(TRUE, FALSE), seq.int(1, 1.5, 0.5))
   testthat::expect_output(print(v), ".{21}")
-  testthat::expect_output(print(v, n = 1), ".{12}")
+  testthat::expect_output(print(v, n = 1))
 })
 testthat::test_that("unordered_multimap print boolean string", {
   v <- cpp_unordered_multimap(c(TRUE, FALSE), c("hello", "there"))
   testthat::expect_output(print(v), ".{31}")
-  testthat::expect_output(print(v, n = 1), ".{16}")
+  testthat::expect_output(print(v, n = 1))
 })
 testthat::test_that("unordered_multimap print boolean boolean", {
   v <- cpp_unordered_multimap(c(TRUE, FALSE), c(TRUE, FALSE))
   testthat::expect_output(print(v), ".{26}")
-  testthat::expect_output(print(v, n = 1), ".{14}")
+  testthat::expect_output(print(v, n = 1))
 })
 
 # stack
