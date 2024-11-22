@@ -1,7 +1,7 @@
 ---
 title: "Introduction to cppcontainers"
 author: "Christian Düben"
-date: "November 09, 2024"
+date: "Updated: November 22, 2024"
 output: 
   rmarkdown::html_vignette:
     number_sections: true
@@ -26,11 +26,11 @@ table {width: 100%;}
 # Motivation
 <p style="text-align: justify">This package incorporates C++ Standard Template Library containers into R. In doing so, it meets various objectives and targets different groups of R users.</p>
 
-<p style="text-align: justify">First, it speeds up development workflows. If you previously wanted to make use of C++ containers, you had to write C++ code and wait for compilation every time you changed it. To evaluate the data held in C++, you also had to write print or export functions for each setup. cppcontainers does these steps for you. It wraps C++ containers, their methods, and helper functions and compiles them when the package is installed. There is no need to write C++ code or wait for compilation after the package has been installed. You can use the containers as interactively and without waiting time as R's native data frames.</p>
+<p style="text-align: justify">First, it speeds up development workflows. If you previously wanted to make use of C++ containers, you had to write C++ code and wait for compilation every time you changed it. To evaluate the data held in C++, you also had to write print or export functions for each setup. cppcontainers does these steps for you. It wraps C++ containers, their methods, and helper functions and compiles them when the package is installed. There is no need to write C++ code or wait for compilation after the package has been installed. You can use the containers as interactively and without waiting time as you do with R's native data frames.</p>
 
-<p style="text-align: justify">Second, it allows user who do not administer their machines without an installed compiler (e.g., without Rtools on Windows) to use C++ containers, through the binary version of the package.</p>
+<p style="text-align: justify">Second, it allows users who do not have a compiler installed (e.g., without Rtools on Windows) to use C++ containers, through the binary version of the package.</p>
 
-<p style="text-align: justify">Third, it makes C++ easily accessible to R users. Much of the R community does not understand C++ and does not want to undertake the effort of learning it. This can impede collaboration between team members who are familiar with C++ and those who are not. cppcontainers circumvents this problem by abstracting away much of the underlying C++ code, framing everything in an R-style syntax (incl. 1-based indices), and explaining functions in a language intuitive to R users.</p>
+<p style="text-align: justify">Third, it makes C++ easily accessible to R users. Much of the R community does not understand C++ and does not want to undertake the effort of learning it. This can impede collaboration between the team members who are familiar with C++ and those who are not. cppcontainers circumvents this problem by abstracting away much of the underlying C++ code, framing everything in an R-style syntax (incl. 1-based indices), and explaining functions in a language intuitive to R users.</p>
 
 <p style="text-align: justify">Fourth, it pushes R towards a general purpose programming language. One of the big differences between R and general purpose languages is the availability of data structures. In R, almost everything is some sort of vector; a vector of primitives, a vector of pointers, etc. Even scalars are vectors of length one. This simplicity makes R very accessible and easy to learn for its audience, that is largely comprised of people with a background in quantitative, empirical methods but without training in software engineering. However, users who come from a general purpose programming language, such as C++ or Python, likely miss a larger collection of data structures. cppcontainers fills this gap.</p>
 
@@ -72,13 +72,13 @@ table {width: 100%;}
 <p style="text-align: justify">Much of STL containers' power lies in nested structures. In C++, you can, e.g., assemble a vector of sets or a queue of multimaps. This increases the universe of potential setups exponentially. Since an R wrapper package needs to hardcode all options, cppcontainers does not implement nested compositions and only targets primitive elements of the four mentioned types.</p><br>
 
 # Methods
-<p style="text-align: justify">This package covers many of the container types' methods and maintains their original names. To make them more intuitive for R users, it replaces the object-oriented notation (`x.size()`), with the in R more commonly used functional notation (`size(x)`). cppcontainers omits methods that return values such as pointers or iterators, which are not directly utilizable in R. One example is the `equal_range` method for maps.</p>
+<p style="text-align: justify">This package covers many of the container types' methods and maintains their original names. To make them more intuitive for R users, it replaces the object-oriented notation (`x.size()`) with the in R more commonly used functional notation (`size(x)`). cppcontainers omits methods that return values such as pointers or iterators, which are not directly utilizable in R. One example is the `equal_range` method for maps.</p>
 
 <p style="text-align: justify">A few methods are modified to make them more convenient for R users. This particularly includes indexing and vector inputs. Methods like `count` and `contains` only accept a single value in C++, but allow for a vector in this package. cppcontainers solves it with iterative procedures on the C++ side.</p>
 
 <p style="text-align: justify">An exception from the naming convention are the functions creating the objects. To avoid clashes with, e.g., `base::vector` and `utils::stack`, this package prefixes the respective methods with `cpp_`. `cpp_set` creates a set, `cpp_vector` creates a vector, etc. Another outlier is `remove`, which the package implements as `remove.` (with a dot suffix) to avoid compatibility problems with `base::remove`.</p>
 
-<p style="text-align: justify">The following table illustrates which methods apply to which container type. Italicized names do not refer to original C++ methods, but to functions added by this package. They aid in accessing the objects' data from R.</p>
+<p style="text-align: justify">The following table illustrates which methods apply to which container type. Italicized names do not refer to original C++ methods, but to functions added by this package. These aid in accessing the objects' data from R.</p>
 
 ## Associative Containers
 
@@ -244,6 +244,7 @@ table {width: 100%;}
 | try_emplace      |         |         |              |         |
 | *type*           | &check; | &check; | &check;      | &check; |
 | unique           |         |         | &check;      | &check; |
+<br>
 
 # Examples
 <p style="text-align: justify">The manual pages provide ample examples on the classes and methods in this package. The subsequent code just showcases a few of the functionalities outside of any meaningful workflow.</p>
