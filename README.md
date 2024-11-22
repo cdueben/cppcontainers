@@ -20,6 +20,12 @@ Install the package from GitHub:
 devtools::install_github("cdueben/cppcontainers", build_vignettes = T)
 ```
 
+On various operating systems, you can skip the compilation step by installing the binary package from 
+[CRAN](https://CRAN.R-project.org/package=cppcontainers):
+```
+install.packages("cppcontainers")
+```
+
 ## User Guide
 
 New users may want to consult the vignette for an introduction to the package. It, e.g., briefly introduces the container types and lists which method 
