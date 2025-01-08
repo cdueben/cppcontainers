@@ -965,7 +965,7 @@ template <typename C, typename R> // C: vector data type, R: R vector
 R vector_to_r(Rcpp::XPtr<std::vector<C> > x, const bool use_n, std::size_t n, const bool reverse, const bool use_from, std::size_t from, const bool use_to,
   std::size_t to, R& t) {
   if(!use_n && !use_from && !use_to) {
-    Rcpp::wrap(*x);
+    return Rcpp::wrap(*x);
   }
   const std::size_t x_size = x->size();
   if(use_n) {
@@ -1035,7 +1035,7 @@ template <typename C, typename R> // C: deque data type, R: R vector
 R deque_to_r(Rcpp::XPtr<std::deque<C> > x, const bool use_n, std::size_t n, const bool reverse, const bool use_from, std::size_t from, const bool use_to,
   std::size_t to, R& t) {
   if(!use_n && !use_from && !use_to) {
-    Rcpp::wrap(*x);
+    return Rcpp::wrap(*x);
   }
   const std::size_t x_size = x->size();
   if(use_n) {
