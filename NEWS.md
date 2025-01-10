@@ -1,3 +1,6 @@
+# version 1.0.3
+- fix clang test on macOS
+
 # version 1.0.2
 - enhance documentation
 
