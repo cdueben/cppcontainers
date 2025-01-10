@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/cdueben/cppcontainers/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/cdueben/cppcontainers/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 # cppcontainers
 
 The package makes C++ Standard Template Library containers interactively usable in R.
