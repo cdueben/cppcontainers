@@ -24,6 +24,7 @@ jobs:
       matrix:
         config:
           - {os: macos-latest,   r: 'release'}
+          - {os: macos-latest,   r: 'devel', http-user-agent: 'release'}
 
           - {os: windows-latest, r: 'release'}
 
