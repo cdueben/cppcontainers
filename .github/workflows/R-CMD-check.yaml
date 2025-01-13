@@ -48,6 +48,10 @@ jobs:
         if: runner.os == 'macOS' && matrix.config.r == 'devel'
         run: |
           brew install llvm@16
+          echo "CC=clang-16" >> $GITHUB_ENV
+          echo "CXX=clang++-16" >> $GITHUB_ENV
+          echo "LDFLAGS=-L/usr/local/opt/llvm@16/lib" >> $GITHUB_ENV
+          echo "CPPFLAGS=-I/usr/local/opt/llvm@16/include" >> $GITHUB_ENV
           echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
 
       - uses: r-lib/actions/setup-pandoc@v2
@@ -57,6 +61,8 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
+          install-r: false
+          update: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
