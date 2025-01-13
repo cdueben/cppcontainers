@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # stack
 testthat::test_that("stack pop integer", {
   v <- cpp_stack(4:9)

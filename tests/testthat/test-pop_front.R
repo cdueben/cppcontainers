@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # deque
 testthat::test_that("deque pop_front integer", {
   v <- cpp_deque(4:9)

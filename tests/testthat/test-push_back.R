@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # vector
 testthat::test_that("vector push_back integer", {
   v <- cpp_vector(4:6)

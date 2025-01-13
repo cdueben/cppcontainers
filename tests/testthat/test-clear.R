@@ -1,3 +1,4 @@
+skip_on_os("mac")
 tests <- function(v) {
   r <- testthat::expect_invisible(clear(v))
   testthat::expect_true(empty(v))

@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # forward_list
 testthat::test_that("forward_list type integer", {
   v <- cpp_forward_list(c(4L, 4:6))

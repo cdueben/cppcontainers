@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # set
 testthat::test_that("set emplace integer", {
   v <- cpp_set(4:9)

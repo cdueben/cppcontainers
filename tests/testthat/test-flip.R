@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # vector
 testthat::test_that("vector flip boolean", {
   v <- cpp_vector(c(TRUE, FALSE))

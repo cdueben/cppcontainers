@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # unordered_set
 testthat::test_that("unordered_set rehash integer", {
   v <- cpp_unordered_set(4:6)

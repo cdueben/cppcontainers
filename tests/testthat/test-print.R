@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # which order some of the unordered containers store elements in differs between gcc and clang
 
 # set

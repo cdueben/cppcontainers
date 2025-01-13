@@ -36,7 +36,7 @@ insert(m, seq.int(100, by = 0.1, length.out = 3L), 14:16)
 m
 # [4,1] [5,1.5] [6,2] [14,100] [15,100.1] [16,100.2]
 
-print(m, from = 6)
+print(m, from = 6L)
 # [6,2] [14,100] [15,100.1] [16,100.2]
 
 m <- cpp_map(c("world", "hello", "there"), 4:6)

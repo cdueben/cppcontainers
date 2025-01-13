@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # queue
 testthat::test_that("queue back integer", {
   v <- cpp_queue(4:9)

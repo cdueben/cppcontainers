@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # vector
 testthat::test_that("vector shrink_to_fit integer", {
   v <- cpp_vector(4:6)

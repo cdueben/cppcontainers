@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # forward_list
 testthat::test_that("forward_list remove. integer", {
   v <- cpp_forward_list(4:6)

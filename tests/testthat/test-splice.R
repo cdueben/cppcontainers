@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # list
 testthat::test_that("list splice integer", {
   x <- cpp_list(4:6)

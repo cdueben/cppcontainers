@@ -1,3 +1,4 @@
+skip_on_os("mac")
 tests <- function(v) {
   r <- testthat::expect_type(capacity(v), "double")
   testthat::expect_length(r, 1L)

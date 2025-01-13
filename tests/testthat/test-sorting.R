@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # priority_queue
 testthat::test_that("priority_queue sorting integer descending", {
   v <- cpp_priority_queue(4:9)

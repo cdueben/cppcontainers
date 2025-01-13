@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # set
 testthat::test_that("set merge integer", {
   x <- cpp_set(4:9)

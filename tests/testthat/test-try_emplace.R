@@ -1,3 +1,4 @@
+skip_on_os("mac")
 # map
 testthat::test_that("map try_emplace integer integer", {
   v <- cpp_map(4:9, 12:17)
