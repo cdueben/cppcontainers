@@ -42,6 +42,7 @@ jobs:
           brew install jpeg
           brew install libpng
           brew install libtiff
+          xcode-select --install || true
 
       - name: Configure clang 16
         run: |
