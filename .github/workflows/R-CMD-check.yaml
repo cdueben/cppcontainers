@@ -22,7 +22,7 @@ jobs:
     strategy:
       matrix:
         config:
-          - {os: macos-latest,   r: 'devel', http-user-agent: 'release', clang: '16'}
+          - {os: macos-15,   r: 'devel', http-user-agent: 'release', clang: '16'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -34,7 +34,6 @@ jobs:
         run: |
           brew update
           brew install llvm@16
-          brew install r
 
       - name: Use clang 16
         if: matrix.config.clang == '16'
@@ -49,7 +48,7 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-          install-r: false
+          install-r: true
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
