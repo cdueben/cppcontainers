@@ -16,8 +16,8 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-      CC: clang
-      CXX: clang++
+      CC: /usr/local/opt/llvm@16/bin/clang
+      CXX: /usr/local/opt/llvm@16/bin/clang++
       CFLAGS: -O2
       CXXFLAGS: -O2
       MAKE: make -j2
