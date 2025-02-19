@@ -30,7 +30,7 @@ jobs:
           brew update
           brew install gcc
           brew install llvm@16
-          brew link --force llvm@16
+          # brew link --force llvm@16
           brew install automake
           brew install fribidi
           brew install gettext
