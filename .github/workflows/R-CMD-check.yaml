@@ -18,11 +18,8 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
       CC: /usr/local/opt/llvm@16/bin/clang
       CXX: /usr/local/opt/llvm@16/bin/clang++
-      LDFLAGS: "-L/usr/local/opt/llvm@16/lib -Wl,-rpath,/usr/local/opt/llvm@16/lib"
-      CPPFLAGS: "-I/usr/local/opt/llvm@16/include"
-      CFLAGS: "-O2 -I/usr/local/opt/llvm@16/include"
-      CXXFLAGS: "-O2 -I/usr/local/opt/llvm@16/include"
-      PATH: "/usr/local/opt/llvm@16/bin:$PATH"
+      CFLAGS: "-O2"
+      CXXFLAGS: "-O2"
       MAKE: make -j2
 
     steps:
