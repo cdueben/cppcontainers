@@ -1,8 +1,13 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+#
+# NOTE: This workflow is overkill for most R packages and
+# check-standard.yaml is likely a better choice.
+# usethis::use_github_action("check-standard") will install it.
 on:
   push:
 
-name: R-CMD-check
+name: R-CMD-check.yaml
 
 permissions:
   actions: write
@@ -10,79 +15,48 @@ permissions:
 
 jobs:
   R-CMD-check:
-    runs-on: macos-latest
-    name: macOS (R-devel, clang 16)
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      matrix:
+        config:
+          - {os: macos-latest,   r: 'devel', http-user-agent: 'release', clang: '16'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-      CC: /usr/local/opt/llvm@16/bin/clang
-      CXX: /usr/local/opt/llvm@16/bin/clang++
-      CFLAGS: "-O2"
-      CXXFLAGS: "-O2"
-      MAKE: make -j2
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install system dependencies
+      - name: Install clang 16
+        if: matrix.config.clang == '16'
         run: |
           brew update
-          brew install gcc
           brew install llvm@16
-          brew link --force llvm@16
-          brew install automake
-          brew install fribidi
-          brew install gettext
-          brew install pcre2
-          brew install xz
-          brew install libgit2
-          brew install udunits
-          brew install cairo
-          brew install pkg-config
-          brew install tcl-tk
-          brew install jpeg
-          brew install libpng
-          brew install libtiff
-          brew install clang
-          brew install clang++
-          xcode-select --install || true
+          brew install r
 
-      - name: Configure clang 16
-        run: |
-          echo "CC=/usr/local/opt/llvm@16/bin/clang" >> $GITHUB_ENV
-          echo "CXX=/usr/local/opt/llvm@16/bin/clang++" >> $GITHUB_ENV
-          echo "LDFLAGS=-L/usr/local/opt/llvm@16/lib -Wl,-rpath,/usr/local/opt/llvm@16/lib" >> $GITHUB_ENV
-          echo "CPPFLAGS=-I/usr/local/opt/llvm@16/include" >> $GITHUB_ENV
-          echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
+      - name: Use clang 16
+        if: matrix.config.clang == '16'
+        run: echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
 
-      - name: Download and compile R-devel
-        run: |
-          curl -O https://stat.ethz.ch/R/daily/R-devel.tar.gz
-          tar -xzf R-devel.tar.gz
-          mkdir r-devel-build
-          cd r-devel-build
-          # Set permissions for the runner user
-          sudo chown -R $(whoami) .
-          ../R-devel/configure --enable-R-shlib --enable-memory-profiling --with-cairo --with-jpeglib --with-readline --with-tcltk --with-recommended-packages --enable-RGBA CC=/usr/local/opt/llvm@16/bin/clang CXX=/usr/local/opt/llvm@16/bin/clang++
-          make
-          sudo make install
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Install package dependencies
-        run: |
-          R -e 'install.packages("remotes")'
-          R -e 'remotes::install_deps(dependencies = TRUE)'
-          R -e 'install.packages("rcmdcheck")'
-
-      - name: Check package
-        run: |
-          R -e 'rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")'
-
-      - name: Upload check results
-        if: failure()
-        uses: actions/upload-artifact@v4
+      - uses: r-lib/actions/setup-r@v2
         with:
-          name: ${{ runner.os }}-r-devel-results
-          path: check
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+          install-r: false
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
