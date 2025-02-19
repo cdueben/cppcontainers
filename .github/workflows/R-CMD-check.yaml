@@ -55,8 +55,11 @@ jobs:
         run: |
           curl -O https://stat.ethz.ch/R/daily/R-devel.tar.gz
           tar -xzf R-devel.tar.gz
-          cd R-devel
-          ./configure --enable-R-shlib --enable-memory-profiling --with-cairo --with-jpeglib --with-readline --with-tcltk --with-recommended-packages --enable-RGBA CC=/usr/local/opt/llvm@16/bin/clang CXX=/usr/local/opt/llvm@16/bin/clang++
+          mkdir r-devel-build
+          cd r-devel-build
+          # Set permissions for the runner user
+          sudo chown -R $(whoami) .
+          ../R-devel/configure --enable-R-shlib --enable-memory-profiling --with-cairo --with-jpeglib --with-readline --with-tcltk --with-recommended-packages --enable-RGBA CC=/usr/local/opt/llvm@16/bin/clang CXX=/usr/local/opt/llvm@16/bin/clang++
           make
           sudo make install
 
