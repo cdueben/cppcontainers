@@ -10,16 +10,12 @@ permissions:
 
 jobs:
   R-CMD-check:
-    runs-on: macos-15
+    runs-on: macos-latest
     name: macOS (R-devel, clang 16)
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
-      CC: "clang -mmacos-version-min=15 -fsanitize=address,undefined"
-      CXX: "clang++ -mmacos-version-min=15 -fsanitize=address,undefined"
-      CFLAGS: "-falign-functions=8 -g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion -Wstrict-prototypes"
-      CXXFLAGS: "-g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion"
       MAKE: make -j2
       LC_CTYPE: en_GB.UTF-8
       MallocNanoZone: 0
@@ -44,30 +40,17 @@ jobs:
       - name: Install system dependencies
         run: |
           brew update
-          brew install gcc
-          brew install llvm@16
-          brew install automake
-          brew install fribidi
-          brew install gettext
-          brew install pcre2
-          brew install xz
-          brew install libgit2
-          brew install udunits
-          brew install cairo
-          brew install pkg-config
-          brew install tcl-tk
-          brew install jpeg
-          brew install libpng
-          brew install libtiff
+          brew install gcc llvm@16 automake fribidi gettext pcre2 xz libgit2 
+          brew install udunits cairo pkg-config tcl-tk jpeg libpng libtiff
           xcode-select --install || true
 
       - name: Configure clang 16
         run: |
+          echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
           echo "CC=/usr/local/opt/llvm@16/bin/clang" >> $GITHUB_ENV
           echo "CXX=/usr/local/opt/llvm@16/bin/clang++" >> $GITHUB_ENV
           echo "LDFLAGS=-L/usr/local/opt/llvm@16/lib -Wl,-rpath,/usr/local/opt/llvm@16/lib" >> $GITHUB_ENV
           echo "CPPFLAGS=-I/usr/local/opt/llvm@16/include" >> $GITHUB_ENV
-          echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
 
       - name: Download and compile R-devel
         run: |
@@ -85,13 +68,18 @@ jobs:
             --with-readline \
             --with-tcltk \
             --with-recommended-packages \
-            --enable-RGBA \
-            CC="$CC" \
-            CXX="$CXX"
+            --enable-RGBA
           make
           sudo make install
 
       - uses: r-lib/actions/setup-pandoc@v2
+
+      - name: Configure sanitizers for package check
+        run: |
+          echo "CC=clang -mmacos-version-min=15 -fsanitize=address,undefined" >> $GITHUB_ENV
+          echo "CXX=clang++ -mmacos-version-min=15 -fsanitize=address,undefined" >> $GITHUB_ENV
+          echo "CFLAGS=-falign-functions=8 -g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion -Wstrict-prototypes" >> $GITHUB_ENV
+          echo "CXXFLAGS=-g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion" >> $GITHUB_ENV
 
       - name: Install package dependencies
         run: |
