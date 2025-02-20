@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   R-CMD-check:
-    runs-on: macos-latest
+    runs-on: macos-15
     name: macOS (R-devel, clang 16)
 
     env:
@@ -46,8 +46,8 @@ jobs:
 
       - name: Configure clang 16
         run: |
-          echo "CC=/usr/local/opt/llvm@16/bin/clang -mmacos-version-min=13" >> $GITHUB_ENV
-          echo "CXX=/usr/local/opt/llvm@16/bin/clang++ -mmacos-version-min=13" >> $GITHUB_ENV
+          echo "CC=-L/opt/homebrew/opt/llvm@16/bin/clang" >> $GITHUB_ENV
+          echo "CXX=-L/opt/homebrew/opt/llvm@16/bin/clang++" >> $GITHUB_ENV
           echo "LDFLAGS=-L/opt/homebrew/opt/llvm@16/lib/c++ -Wl,-rpath,/opt/homebrew/opt/llvm@16/lib/c++" >> $GITHUB_ENV
           echo "CPPFLAGS=-I/usr/local/opt/llvm@16/include" >> $GITHUB_ENV
           echo 'export PATH="/opt/homebrew/opt/llvm@16/bin:$PATH"' >> /Users/runner/.bash_profile
