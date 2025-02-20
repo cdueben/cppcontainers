@@ -46,23 +46,13 @@ jobs:
 
       - name: Configure clang 16
         run: |
-          brew_prefix=$(brew --prefix llvm@16)
-          echo "$brew_prefix/bin" >> $GITHUB_PATH
-          export PATH="$brew_prefix/bin:$PATH"
-          # Test compiler
-          echo "Testing clang installation..."
-          clang --version
-          # Configure without flags first
-          echo "CC=$brew_prefix/bin/clang" >> $GITHUB_ENV
-          echo "CXX=$brew_prefix/bin/clang++" >> $GITHUB_ENV
-          echo "LDFLAGS=-L$brew_prefix/lib" >> $GITHUB_ENV
-          echo "CPPFLAGS=-I$brew_prefix/include" >> $GITHUB_ENV
-          # Create test program
-          echo "#include <stdio.h>" > test.c
-          echo "int main() { printf(\"Hello\\n\"); return 0; }" >> test.c
-          # Try to compile
-          $brew_prefix/bin/clang test.c -o test
-          ./test
+          echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
+          export PATH="/usr/local/opt/llvm@16/bin:$PATH"
+          echo "CC=/usr/local/opt/llvm@16/bin/clang -mmacos-version-min=13" >> $GITHUB_ENV
+          echo "CXX=/usr/local/opt/llvm@16/bin/clang++ -mmacos-version-min=13" >> $GITHUB_ENV
+          echo "LDFLAGS=-L/usr/local/opt/llvm@16/lib" >> $GITHUB_ENV
+          echo "CPPFLAGS=-I/usr/local/opt/llvm@16/include" >> $GITHUB_ENV
+          echo 'export PATH="/opt/homebrew/opt/llvm@16/bin:$PATH"' >> /Users/runner/.bash_profile
 
       - name: Download and compile R-devel
         run: |
@@ -70,10 +60,7 @@ jobs:
           tar -xzf R-devel.tar.gz
           mkdir r-devel-build
           cd r-devel-build
-          # Print current environment
-          echo "Current environment:"
-          env | sort
-          echo "Configuring R..."
+          sudo chown -R $(whoami) .
           ../R-devel/configure \
             --with-C23 \
             --enable-R-shlib \
@@ -83,10 +70,13 @@ jobs:
             --with-readline \
             --with-tcltk \
             --with-recommended-packages \
-            --enable-RGBA || (cat config.log && false)
-          echo "Building R..."
-          make || (cat config.log && false)
-          echo "Installing R..."
+            --enable-RGBA
+          make
+          if [ $? -ne 0 ]; then
+            echo "R compilation failed. Showing config.log:"
+            cat config.log
+            exit 1
+          fi
           sudo make install
 
       - uses: r-lib/actions/setup-pandoc@v2
