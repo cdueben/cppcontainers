@@ -1,13 +1,8 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
-# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-#
-# NOTE: This workflow is overkill for most R packages and
-# check-standard.yaml is likely a better choice.
-# usethis::use_github_action("check-standard") will install it.
 on:
   push:
 
-name: R-CMD-check.yaml
+name: R-CMD-check
 
 permissions:
   actions: write
@@ -15,47 +10,102 @@ permissions:
 
 jobs:
   R-CMD-check:
-    runs-on: ${{ matrix.config.os }}
-
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
-    strategy:
-      matrix:
-        config:
-          - {os: macos-15,   r: 'devel', http-user-agent: 'release', clang: '16'}
+    runs-on: macos-latest
+    name: macOS (R-devel, clang 16)
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      CC: "clang -mmacos-version-min=15 -fsanitize=address,undefined"
+      CXX: "clang++ -mmacos-version-min=15 -fsanitize=address,undefined"
+      CFLAGS: "-falign-functions=8 -g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion -Wstrict-prototypes"
+      CXXFLAGS: "-g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion"
+      MAKE: make -j2
+      LC_CTYPE: en_GB.UTF-8
+      MallocNanoZone: 0
+      UBSAN_OPTIONS: print_stacktrace=1
+      _R_CHECK_FORCE_SUGGESTS_: FALSE
+      _R_CHECK_INSTALL_DEPENDS_: true
+      _R_CHECK_NO_RECOMMENDED_: true
+      _R_CHECK_TIMINGS_: 10
+      _R_CHECK_DEPRECATED_DEFUNCT_: true
+      _R_CHECK_CODE_ASSIGN_TO_GLOBALENV_: true
+      _R_CHECK_CODE_DATA_INTO_GLOBALENV_: true
+      _R_CHECK_S3_METHODS_NOT_REGISTERED_: true
+      _R_CHECK_NATIVE_ROUTINE_REGISTRATION_: true
+      _R_CHECK_COMPILATION_FLAGS_: true
+      _R_CHECK_THINGS_IN_TEMP_DIR_: true
+      _R_CHECK_MATRIX_DATA_: TRUE
+      _R_CHECK_BROWSER_NONINTERACTIVE_: true
 
     steps:
-      - name: Install clang 16
-        if: matrix.config.clang == '16'
+      - uses: actions/checkout@v4
+
+      - name: Install system dependencies
         run: |
           brew update
+          brew install gcc
           brew install llvm@16
+          brew install automake
+          brew install fribidi
+          brew install gettext
+          brew install pcre2
+          brew install xz
+          brew install libgit2
+          brew install udunits
+          brew install cairo
+          brew install pkg-config
+          brew install tcl-tk
+          brew install jpeg
+          brew install libpng
+          brew install libtiff
+          xcode-select --install || true
 
-      - name: Use clang 16
-        if: matrix.config.clang == '16'
-        run: echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
+      - name: Configure clang 16
+        run: |
+          echo "CC=/usr/local/opt/llvm@16/bin/clang" >> $GITHUB_ENV
+          echo "CXX=/usr/local/opt/llvm@16/bin/clang++" >> $GITHUB_ENV
+          echo "LDFLAGS=-L/usr/local/opt/llvm@16/lib -Wl,-rpath,/usr/local/opt/llvm@16/lib" >> $GITHUB_ENV
+          echo "CPPFLAGS=-I/usr/local/opt/llvm@16/include" >> $GITHUB_ENV
+          echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
 
-      - uses: actions/checkout@v4
+      - name: Download and compile R-devel
+        run: |
+          curl -O https://stat.ethz.ch/R/daily/R-devel.tar.gz
+          tar -xzf R-devel.tar.gz
+          mkdir r-devel-build
+          cd r-devel-build
+          sudo chown -R $(whoami) .
+          ../R-devel/configure \
+            --with-C23 \
+            --enable-R-shlib \
+            --enable-memory-profiling \
+            --with-cairo \
+            --with-jpeglib \
+            --with-readline \
+            --with-tcltk \
+            --with-recommended-packages \
+            --enable-RGBA \
+            CC="$CC" \
+            CXX="$CXX"
+          make
+          sudo make install
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
-          install-r: true
+      - name: Install package dependencies
+        run: |
+          R -e 'install.packages("remotes")'
+          R -e 'remotes::install_deps(dependencies = TRUE)'
+          R -e 'install.packages("rcmdcheck")'
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+      - name: Check package
+        run: |
+          R -e 'rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")'
 
-      - uses: r-lib/actions/check-r-package@v2
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@v4
         with:
-          upload-snapshots: true
-          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+          name: ${{ runner.os }}-r-devel-results
+          path: check
