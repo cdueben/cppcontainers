@@ -47,9 +47,10 @@ jobs:
       - name: Configure clang 16
         run: |
           echo "/usr/local/opt/llvm@16/bin" >> $GITHUB_PATH
-          echo "CC=/usr/local/opt/llvm@16/bin/clang" >> $GITHUB_ENV
-          echo "CXX=/usr/local/opt/llvm@16/bin/clang++" >> $GITHUB_ENV
-          echo "LDFLAGS=-L/usr/local/opt/llvm@16/lib -Wl,-rpath,/usr/local/opt/llvm@16/lib" >> $GITHUB_ENV
+          export PATH="/usr/local/opt/llvm@16/bin:$PATH"
+          echo "CC=/usr/local/opt/llvm@16/bin/clang -mmacos-version-min=13" >> $GITHUB_ENV
+          echo "CXX=/usr/local/opt/llvm@16/bin/clang++ -mmacos-version-min=13" >> $GITHUB_ENV
+          echo "LDFLAGS=-L/usr/local/opt/llvm@16/lib" >> $GITHUB_ENV
           echo "CPPFLAGS=-I/usr/local/opt/llvm@16/include" >> $GITHUB_ENV
 
       - name: Download and compile R-devel
@@ -70,16 +71,21 @@ jobs:
             --with-recommended-packages \
             --enable-RGBA
           make
+          if [ $? -ne 0 ]; then
+            echo "R compilation failed. Showing config.log:"
+            cat config.log
+            exit 1
+          fi
           sudo make install
 
       - uses: r-lib/actions/setup-pandoc@v2
 
       - name: Configure sanitizers for package check
         run: |
-          echo "CC=clang -mmacos-version-min=15 -fsanitize=address,undefined" >> $GITHUB_ENV
-          echo "CXX=clang++ -mmacos-version-min=15 -fsanitize=address,undefined" >> $GITHUB_ENV
-          echo "CFLAGS=-falign-functions=8 -g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion -Wstrict-prototypes" >> $GITHUB_ENV
-          echo "CXXFLAGS=-g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion" >> $GITHUB_ENV
+          mkdir -p ~/.R
+          echo "CFLAGS=-g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion -Wstrict-prototypes -fsanitize=address,undefined" > ~/.R/Makevars
+          echo "CXXFLAGS=-g -O2 -Wall -pedantic -Wconversion -Wno-sign-conversion -fsanitize=address,undefined" >> ~/.R/Makevars
+          echo "LDFLAGS=-fsanitize=address,undefined" >> ~/.R/Makevars
 
       - name: Install package dependencies
         run: |
