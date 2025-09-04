@@ -12,7 +12,7 @@ License: MIT + file LICENSE
 Imports: base (>= 4.0.0), methods, Rcpp
 LinkingTo: Rcpp
 SystemRequirements: C++20
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Collate: 
     'RcppExports.R'
     'utils.R'

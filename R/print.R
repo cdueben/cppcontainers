@@ -34,16 +34,16 @@ process_print_ellipsis_ordered <- function(x, e, index) {
     use_from <- FALSE
     use_to <- FALSE
     if(index) {
-      from <- to <- NA_integer_
+      from <- to <- 0L
     } else {
       from <- to <- assign_na(get_type(x))
     }
   } else {
-    n <- NA_integer_
+    n <- 0L
     if(is.null(from)) {
       use_from <- FALSE
       if(index) {
-        from <- NA_integer_
+        from <- 0L
       } else {
         from <- assign_na(get_type(x))
       }
@@ -55,7 +55,7 @@ process_print_ellipsis_ordered <- function(x, e, index) {
     if(is.null(to)) {
       use_to <- FALSE
       if(index) {
-        to <- NA_integer_
+        to <- 0L
       } else {
         to <- assign_na(get_type(x))
       }

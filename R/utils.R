@@ -38,10 +38,10 @@ check_type <- function(x_type, i, index) {
 
 assign_na <- function(x_type) {
   return(switch(x_type,
-    integer = NA_integer_,
-    double = NA_real_,
-    string = NA_character_,
-    boolean = NA
+    integer = 0L,
+    double = 0,
+    string = "",
+    boolean = FALSE
   ))
 }
 
