@@ -2,12 +2,6 @@
 on:
   push:
 
-name: R-CMD-check
-
-permissions:
-  actions: write
-  contents: read
-
 name: R-CMD-check.yaml
 
 permissions: read-all
