@@ -1,3 +1,6 @@
+# version 1.0.5
+- remove NA placeholders
+
 # version 1.0.4
 - fix clang test on macOS
 
